@@ -23,11 +23,11 @@ import static android.R.attr.button;
 import static android.R.attr.start;
 import static android.R.attr.value;
 
-public class game extends AppCompatActivity {
+public class game extends AppCompatActivity implements View.OnClickListener {
 
     private static String[] word_list;
-    private static TextView currentWord, team1score, team2score, catagoryLabel;
-    private static Button next_button, bs_button, add1, add2, startButton;
+    private  TextView currentWord, team1score, team2score, catagoryLabel;
+    private  Button next_button, bs_button, add1, add2, startButton;
 
     private int team1_total = 0;
     private int team2_total = 0;
@@ -40,10 +40,34 @@ public class game extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        team1score = (TextView)findViewById(R.id.score1);
+        team2score = (TextView)findViewById(R.id.score2);
 
+        currentWord = (TextView)findViewById(R.id.currentWord);
+
+        next_button = (Button) findViewById(R.id.next_button);
+        next_button.setOnClickListener(this);
+
+        bs_button = (Button) findViewById(R.id.bs_button);
+        bs_button.setOnClickListener(this);
+
+        add1 = (Button) findViewById(R.id.add1);
+        add1.setOnClickListener( this);
+
+        add2 = (Button) findViewById(R.id.add2);
+        add2.setOnClickListener(this);
+
+        startButton = (Button) findViewById(R.id.startButton);
+        //startButton.setOnClickListener(this);
+
+        Bundle extras = getIntent().getExtras();
+        Bundle b2 = this.getIntent().getExtras();
+        word_list = b2.getStringArray("word_list");
+        String catagoryName = this.getIntent().getExtras().getString("catagory");
+        catagoryLabel = (TextView)findViewById(R.id.catagoryLabel);
+        catagoryLabel.setText(catagoryName);
 
         //countdown timer idk a better place to put this for now going to test it here
         final TextView textic = (TextView) findViewById(R.id.timerTextView2);
@@ -58,8 +82,8 @@ public class game extends AppCompatActivity {
             }
         };
 
-        startButton = (Button)findViewById(R.id.startButton);
-        currentWord = (TextView)findViewById(R.id.currentWord);
+
+
 
         startButton.setOnClickListener(
 
@@ -77,20 +101,17 @@ public class game extends AppCompatActivity {
         );
 
 
-        Bundle extras = getIntent().getExtras();
-        Bundle b2 = this.getIntent().getExtras();
-        word_list = b2.getStringArray("word_list");
-        String catagoryName = this.getIntent().getExtras().getString("catagory");
-        catagoryLabel = (TextView)findViewById(R.id.catagoryLabel);
-        catagoryLabel.setText(catagoryName);
+
 
         //String[] word_list = extras.getStringArray("word_list");
-        onClickListenerButton(word_list);
+        //onClickListenerButton(word_list);
 
 
     }
 
-    public void onClickListenerButton(final String[] words) {
+    //This method has been commented out because I think i found a better way to implement it with the switch case after this section
+    //Dont want to delete it until im sure the other section works like this one used to
+  /*  public void onClickListenerButton(final String[] words) {
 
 
         next_button = (Button)findViewById(R.id.next_button);
@@ -147,8 +168,8 @@ public class game extends AppCompatActivity {
                         team1score.setText("" + team1_total);
                         if(team1_total == 7) {
 
-                            i.putExtra("winner", "Team 1");
-                           // startActivity(i);
+
+
 
 
                         }
@@ -195,8 +216,65 @@ public class game extends AppCompatActivity {
         }
 
     }
+*/
+    public void onClick(View v){
+
+        switch(v.getId())
+        {
+            case R.id.next_button:
+            {
+                counter++;
+                if(counter >= word_list.length){
+
+                    counter = 0;
+                }
+
+                currentWord.setText(word_list[counter]);
+                break;
+            }
+
+            case R.id.bs_button:
+            {
+                if(counter == 0){
+                    currentWord.setText(word_list[word_list.length - 1]);
+                } else {
+                    currentWord.setText(word_list[counter - 1]);
+                }
+                break;
+            }
+
+            case R.id.add1:
+            {
+                team1_total++;
+                team1score.setText("" + team1_total);
+                if(team1_total == 7) {
+
+                    Intent j = new Intent(this, victory_screen.class);
+                   // j.putExtra("winner", "Team 1");
+                   // startActivity(j);
 
 
+                }
+                break;
+            }
+
+            case R.id.add2:
+            {
+                team2_total++;
+                team2score.setText("" + team2_total);
+                if(team2_total == 7) {
+
+                    i.putExtra("winner", "Team 2");
+                    startActivity(i);
+
+
+                }
+                break;
+            }
+
+
+        }
+    }
 
 
 }
