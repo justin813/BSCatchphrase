@@ -34,7 +34,7 @@ public class game extends AppCompatActivity implements View.OnClickListener {
     private int counter = 0;
     TextView timerTextView;
     long startTime = 0;
-    final Intent i = new Intent(this, victory_screen.class);
+    Intent i = new Intent(this, victory_screen.class);
 
 
     @Override
@@ -82,9 +82,6 @@ public class game extends AppCompatActivity implements View.OnClickListener {
             }
         };
 
-
-
-
         startButton.setOnClickListener(
 
 
@@ -101,122 +98,8 @@ public class game extends AppCompatActivity implements View.OnClickListener {
         );
 
 
-
-
-        //String[] word_list = extras.getStringArray("word_list");
-        //onClickListenerButton(word_list);
-
-
     }
 
-    //This method has been commented out because I think i found a better way to implement it with the switch case after this section
-    //Dont want to delete it until im sure the other section works like this one used to
-  /*  public void onClickListenerButton(final String[] words) {
-
-
-        next_button = (Button)findViewById(R.id.next_button);
-        bs_button = (Button)findViewById(R.id.bs_button);
-        add1 = (Button)findViewById(R.id.add1);
-        add2 = (Button)findViewById(R.id.add2);
-        startButton = (Button)findViewById(R.id.startButton);
-        currentWord = (TextView)findViewById(R.id.currentWord);
-        team1score = (TextView)findViewById(R.id.score1);
-        team2score = (TextView)findViewById(R.id.score2);
-
-
-        next_button.setOnClickListener(
-                new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-                        counter++;
-                        if(counter >= word_list.length){
-
-                            counter = 0;
-                        }
-
-                        currentWord.setText(word_list[counter]);
-
-
-
-                    }
-                }
-        );
-        bs_button.setOnClickListener(
-                new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-
-                        if(counter == 0){
-                            currentWord.setText(word_list[word_list.length - 1]);
-                        } else {
-                            currentWord.setText(word_list[counter - 1]);
-                        }
-
-
-                    }
-                }
-        );
-        add1.setOnClickListener(
-                new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-
-                        team1_total++;
-                        team1score.setText("" + team1_total);
-                        if(team1_total == 7) {
-
-
-
-
-
-                        }
-
-
-                    }
-
-
-
-
-                }
-        );
-        add2.setOnClickListener(
-                new View.OnClickListener(){
-
-                    @Override
-                    public void onClick(View view) {
-
-                        team2_total++;
-                        team2score.setText("" + team2_total);
-                        if(team2_total == 7) {
-
-                            i.putExtra("winner", "Team 2");
-                            startActivity(i);
-
-
-                        }
-
-
-                    }
-                }
-        );
-
-        if(team1_total == 7) {
-
-            // i.putExtra("winner", "Team 1");
-            startActivity(i);
-
-
-        } else if(team2_total == 7){
-
-            // i.putExtra("winner", "Team 2");
-            startActivity(i);
-        }
-
-    }
-*/
     public void onClick(View v){
 
         switch(v.getId())
@@ -250,8 +133,8 @@ public class game extends AppCompatActivity implements View.OnClickListener {
                 if(team1_total == 7) {
 
                     Intent j = new Intent(this, victory_screen.class);
-                   // j.putExtra("winner", "Team 1");
-                   // startActivity(j);
+                    j.putExtra("winner", "Team 1");
+                    startActivity(j);
 
 
                 }
@@ -264,8 +147,9 @@ public class game extends AppCompatActivity implements View.OnClickListener {
                 team2score.setText("" + team2_total);
                 if(team2_total == 7) {
 
-                    i.putExtra("winner", "Team 2");
-                    startActivity(i);
+                    Intent j = new Intent(this, victory_screen.class);
+                    j.putExtra("winner", "Team 2");
+                    startActivity(j);
 
 
                 }
