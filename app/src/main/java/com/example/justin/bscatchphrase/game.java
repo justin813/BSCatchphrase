@@ -1,6 +1,8 @@
 package com.example.justin.bscatchphrase;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,8 +22,12 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 import static android.R.attr.button;
+import static android.R.attr.color;
+import static android.R.attr.colorPrimaryDark;
 import static android.R.attr.start;
 import static android.R.attr.value;
+import static com.example.justin.bscatchphrase.R.id.currentWord;
+import static com.example.justin.bscatchphrase.R.id.textView;
 
 public class game extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +35,10 @@ public class game extends AppCompatActivity implements View.OnClickListener {
     private  TextView currentWord, team1score, team2score, catagoryLabel, timerTextView2;
     private  Button next_button, bs_button, add1, add2, startButton;
     private  boolean roundActive = false;
+    private  boolean viewingBS = false;
+    private  CountDownTimer Count;
 
+    private int oldColor;
     private int team1_total = 0;
     private int team2_total = 0;
     private int counter = 0;
@@ -48,6 +57,8 @@ public class game extends AppCompatActivity implements View.OnClickListener {
         timerTextView2 = (TextView)findViewById(R.id.timerTextView2);
 
         currentWord = (TextView)findViewById(R.id.currentWord);
+        int oldColor = currentWord.getCurrentTextColor();
+        ColorStateList oldColors =  currentWord.getTextColors(); //save original colors
 
         next_button = (Button) findViewById(R.id.next_button);
         next_button.setOnClickListener(this);
@@ -71,10 +82,12 @@ public class game extends AppCompatActivity implements View.OnClickListener {
         catagoryLabel = (TextView)findViewById(R.id.catagoryLabel);
         catagoryLabel.setText(catagoryName);
 
+
+
         //countdown timer idk a better place to put this for now going to test it here
         final TextView textic = (TextView) findViewById(R.id.timerTextView2);
 
-        final CountDownTimer Count = new CountDownTimer(60000, 1000) {
+        Count = new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
                 textic.setText("" + millisUntilFinished / 1000);
             }
@@ -92,14 +105,21 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
                     @Override
                     public void onClick(View view) {
+                        //if round is active the button acts as stop
                         if(roundActive){
-                            Count.cancel();
-                            timerTextView2.setText("Stopped");
-                            roundActive = false;
-                        } else {
+                            stopRound();
+                        } else { // else it acts as start
                             Count.start();
                             roundActive = true;
-                            currentWord.setText(word_list[++counter]);
+
+                            if(!viewingBS){
+                                currentWord.setText(word_list[++counter]);
+                            } else {
+                                currentWord.setText(word_list[++counter]);
+                            }
+                            viewingBS = false;
+
+                            currentWord.setTextColor(Color.GRAY);
                         }
 
                     }
@@ -109,11 +129,26 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+    private void stopRound() {
+        Count.cancel();
+        timerTextView2.setText("Stopped");
+        roundActive = false;
+    }
+
     public void onClick(View v){
 
         switch(v.getId())
         {
             case R.id.next_button: {
+                //if you are checking for bs next reverts the word to the current word instead of the next one
+                if(viewingBS){
+
+                    currentWord.setText(word_list[counter]);
+                    currentWord.setTextColor(Color.GRAY);
+                    viewingBS = false;
+                    break;
+
+                }
 
                 //only allow moving words if a round is active
                 if (roundActive) {
@@ -131,11 +166,16 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.bs_button:
             {
+                
+                stopRound();
                 if(counter == 0){
                     currentWord.setText(word_list[word_list.length - 1]);
+
                 } else {
                     currentWord.setText(word_list[counter - 1]);
                 }
+                currentWord.setTextColor(Color.RED);
+                viewingBS = true;
                 break;
             }
 
