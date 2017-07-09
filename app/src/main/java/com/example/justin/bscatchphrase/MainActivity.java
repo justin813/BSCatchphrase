@@ -21,8 +21,10 @@ import static android.R.attr.value;
 public class MainActivity extends AppCompatActivity {
     private String[] meme_list = {"Dat boi", "One does not simply", "Arrow to the knee", "Ermagherd", "trololololol", "Pepe the frog","Nyan cat", "Harlem shake",
                                     "Grumpy Cat", "Gangnam Style", "Good Guy Greg", "Double Rainbow", "U mad bro?", "Numa Numa","Honey Badger", "Doge"};
-    private String[] cartoon_list = {"Rugrats","Doug","Pokemon","Duck Tales","Dexters Laboratory","Hey Arnold","Captain Planet","Johnny Bravo",
+    private String[] nine_cartoon_list = {"Rugrats","Doug","Pokemon","Duck Tales","Dexters Laboratory","Hey Arnold","Captain Planet","Johnny Bravo",
                                     "Taz-Mania","Animaniacs","Beavis and Butt-Head","2 Stupid Dogs","Roco\'s Modern Life","Spider-Man","Arthur","Johnny Bravo"};
+    private String[] nineties_movies_list = {"Goodfellas", "The Big Lebowski", "The Shawshank Redemption", "Forest Gump", "Se7en", "Titanic", "True Lies", "Pulp Fiction",
+                                    "The Matrix", "The Sixth Sense", "Fight Club", "The Mask", "Payback", "Double Jeopardy", "Schindler's List", "Reservoir Dogs"};
 
     private static RadioGroup radioGroup;
     private static RadioButton radioButton1, radioButton2;
@@ -63,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         Bundle b=new Bundle();
         if(x.equals("Memes")){
             b.putStringArray("word_list", meme_list);
+        } else if(x.equals("90's Cartoons")){
+            b.putStringArray("word_list", nine_cartoon_list);
         } else {
-            b.putStringArray("word_list", cartoon_list);
+            b.putStringArray("word_list", nineties_movies_list);
         }
 
         Intent i=new Intent(this, game.class);

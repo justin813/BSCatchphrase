@@ -43,20 +43,27 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:checkedButton="@+id/radioButton1"
+        android:checkedButton="@+id/memeButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <RadioButton
-            android:id="@+id/radioButton1"
+            android:id="@+id/memeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/rb1" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="match_parent"
+            android:id="@+id/ninetiesMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/rb3" />
+
+        <RadioButton
+            android:id="@+id/ninetiesCartoons"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rb2" />
 

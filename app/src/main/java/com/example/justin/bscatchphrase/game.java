@@ -26,8 +26,9 @@ import static android.R.attr.value;
 public class game extends AppCompatActivity implements View.OnClickListener {
 
     private static String[] word_list;
-    private  TextView currentWord, team1score, team2score, catagoryLabel;
+    private  TextView currentWord, team1score, team2score, catagoryLabel, timerTextView2;
     private  Button next_button, bs_button, add1, add2, startButton;
+    private  boolean roundActive = false;
 
     private int team1_total = 0;
     private int team2_total = 0;
@@ -44,6 +45,7 @@ public class game extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_game);
         team1score = (TextView)findViewById(R.id.score1);
         team2score = (TextView)findViewById(R.id.score2);
+        timerTextView2 = (TextView)findViewById(R.id.timerTextView2);
 
         currentWord = (TextView)findViewById(R.id.currentWord);
 
@@ -79,6 +81,7 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
             public void onFinish() {
                 textic.setText("Finished");
+                roundActive = false;
             }
         };
 
@@ -89,9 +92,15 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
                     @Override
                     public void onClick(View view) {
-
-                        Count.start();
-                        currentWord.setText(word_list[++counter]);
+                        if(roundActive){
+                            Count.cancel();
+                            timerTextView2.setText("Stopped");
+                            roundActive = false;
+                        } else {
+                            Count.start();
+                            roundActive = true;
+                            currentWord.setText(word_list[++counter]);
+                        }
 
                     }
                 }
@@ -104,15 +113,19 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
         switch(v.getId())
         {
-            case R.id.next_button:
-            {
-                counter++;
-                if(counter >= word_list.length){
+            case R.id.next_button: {
 
+                //only allow moving words if a round is active
+                if (roundActive) {
+
+                counter++;
+                    //loop back around in the list if you are at the end
+                if (counter >= word_list.length) {
                     counter = 0;
                 }
-
+                //update current word
                 currentWord.setText(word_list[counter]);
+            }
                 break;
             }
 
