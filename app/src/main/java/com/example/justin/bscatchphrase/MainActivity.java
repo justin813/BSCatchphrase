@@ -1,6 +1,9 @@
 package com.example.justin.bscatchphrase;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,8 +20,10 @@ import java.util.List;
 import static android.R.attr.buttonBarButtonStyle;
 import static android.R.attr.text;
 import static android.R.attr.value;
+import static android.app.PendingIntent.getActivity;
+import static com.example.justin.bscatchphrase.R.id.bs_button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private String[] meme_list = {"Dat boi", "One does not simply", "Arrow to the knee", "Ermagherd", "trololololol", "Pepe the frog","Nyan cat", "Harlem shake",
                                     "Grumpy Cat", "Gangnam Style", "Good Guy Greg", "Double Rainbow", "U mad bro?", "Numa Numa","Honey Badger", "Doge"};
     private String[] nine_cartoon_list = {"Rugrats","Doug","Pokemon","Duck Tales","Dexters Laboratory","Hey Arnold","Captain Planet","Johnny Bravo",
@@ -30,34 +35,27 @@ public class MainActivity extends AppCompatActivity {
     private static RadioButton radioButton1, radioButton2;
     private static Button button;
     private static TextView textView;
+    private static Button rules_info_button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        onClickListenerButton();
-    }
 
-    public void onClickListenerButton() {
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(this);
+
+        rules_info_button = (Button) findViewById(R.id.rules_info_button);
+        rules_info_button.setOnClickListener(this);
 
         radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
         button = (Button)findViewById(R.id.button);
+        rules_info_button = (Button) findViewById(R.id.rules_info_button);
 
-        button.setOnClickListener(
-                new View.OnClickListener(){
 
-                    @Override
-                    public void onClick(View view) {
-                        int selected_id = radioGroup.getCheckedRadioButtonId();
-                        button = (RadioButton)findViewById(selected_id);
-                        Toast.makeText(MainActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
-                        textView = (TextView)findViewById(R.id.textView);
-                        //textView.setText("" + selected_id);
-                        startGame(button.getText().toString());
-                    }
-                }
-        );
     }
+
 
     public void startGame(String x){
 
@@ -78,6 +76,40 @@ public class MainActivity extends AppCompatActivity {
         myIntent.putExtra("word_list", meme_list); //Optional parameters
         this.startActivity(i);
 
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch(v.getId())
+        {
+            //start game button
+            case R.id.button:
+            {
+                int selected_id = radioGroup.getCheckedRadioButtonId();
+                button = (RadioButton)findViewById(selected_id);
+                Toast.makeText(MainActivity.this, button.getText().toString(), Toast.LENGTH_SHORT).show();
+                textView = (TextView)findViewById(R.id.textView);
+                //textView.setText("" + selected_id);
+                startGame(button.getText().toString());
+                break;
+            }
+
+            case R.id.rules_info_button:
+            {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog alert = builder.create();
+                //alert.show();
+                builder.setTitle(R.string.Rules_info);
+                builder.setMessage(R.string.Rules);
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                break;
+            }
+        }
 
     }
 

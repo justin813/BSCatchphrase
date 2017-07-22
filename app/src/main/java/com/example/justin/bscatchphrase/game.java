@@ -8,26 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
-import java.text.CollationElementIterator;
-import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
-import static android.R.attr.button;
-import static android.R.attr.color;
-import static android.R.attr.colorPrimaryDark;
-import static android.R.attr.start;
-import static android.R.attr.value;
-import static com.example.justin.bscatchphrase.R.id.currentWord;
-import static com.example.justin.bscatchphrase.R.id.textView;
 
 public class game extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,13 +36,11 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
         team1score = (TextView)findViewById(R.id.score1);
         team2score = (TextView)findViewById(R.id.score2);
         timerTextView2 = (TextView)findViewById(R.id.timerTextView2);
-
         currentWord = (TextView)findViewById(R.id.currentWord);
-        int oldColor = currentWord.getCurrentTextColor();
-        ColorStateList oldColors =  currentWord.getTextColors(); //save original colors
 
         next_button = (Button) findViewById(R.id.next_button);
         next_button.setOnClickListener(this);
@@ -67,13 +49,12 @@ public class game extends AppCompatActivity implements View.OnClickListener {
         bs_button.setOnClickListener(this);
 
         add1 = (Button) findViewById(R.id.add1);
-        add1.setOnClickListener( this);
+        add1.setOnClickListener(this);
 
         add2 = (Button) findViewById(R.id.add2);
         add2.setOnClickListener(this);
 
         startButton = (Button) findViewById(R.id.startButton);
-        //startButton.setOnClickListener(this);
 
         Bundle extras = getIntent().getExtras();
         Bundle b2 = this.getIntent().getExtras();
@@ -135,11 +116,14 @@ public class game extends AppCompatActivity implements View.OnClickListener {
         roundActive = false;
     }
 
+    //This method will handle any actions associated with buttons on the screen to add more buttons
+    //initialize them above and add them as a case.
     public void onClick(View v){
 
         switch(v.getId())
         {
-            case R.id.next_button: {
+            case R.id.next_button:
+            {
                 //if you are checking for bs next reverts the word to the current word instead of the next one
                 if(viewingBS){
 
@@ -154,19 +138,22 @@ public class game extends AppCompatActivity implements View.OnClickListener {
                 if (roundActive) {
 
                 counter++;
-                    //loop back around in the list if you are at the end
+
+                //loop back around in the list if you are at the end
                 if (counter >= word_list.length) {
                     counter = 0;
                 }
+
                 //update current word
                 currentWord.setText(word_list[counter]);
-            }
+                }
+
                 break;
             }
 
             case R.id.bs_button:
             {
-                
+
                 stopRound();
                 if(counter == 0){
                     currentWord.setText(word_list[word_list.length - 1]);
