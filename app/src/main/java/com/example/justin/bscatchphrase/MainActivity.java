@@ -100,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rules_info_button:
             {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                AlertDialog alert = builder.create();
-                //alert.show();
+
                 builder.setTitle(R.string.Rules_info);
                 builder.setMessage(R.string.Rules);
 
