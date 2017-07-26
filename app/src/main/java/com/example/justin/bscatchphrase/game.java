@@ -23,6 +23,8 @@ public class game extends AppCompatActivity implements View.OnClickListener {
     private  CountDownTimer Count;
 
     private int oldColor;
+    private boolean pointAwarded = false;
+    private boolean firstPoint = true;
     private int team1_total = 0;
     private int team2_total = 0;
     private int counter = 0;
@@ -90,8 +92,17 @@ public class game extends AppCompatActivity implements View.OnClickListener {
                         if(roundActive){
                             stopRound();
                         } else { // else it acts as start
+                            //cancel any score that gets added before the game
+                            if(firstPoint){
+                                firstPoint = false;
+                                team1_total = 0;
+                                team2_total = 0;
+                                team1score.setText("" + team1_total);
+                                team2score.setText("" + team2_total);
+                            }
                             Count.start();
                             roundActive = true;
+                            pointAwarded = false;
 
                             if(!viewingBS){
                                 currentWord.setText(word_list[++counter]);
@@ -168,31 +179,53 @@ public class game extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.add1:
             {
-                team1_total++;
-                team1score.setText("" + team1_total);
-                if(team1_total == 7) {
+                //Points can only be added at the end of a round
+                if(!roundActive){
 
-                    Intent j = new Intent(this, victory_screen.class);
-                    j.putExtra("winner", "Team 1");
-                    startActivity(j);
+                    if(!pointAwarded) {
+
+                        team1_total++;
+                        team1score.setText("" + team1_total);
+                        if(team1_total == 7 && !firstPoint) {
+
+                            Intent j = new Intent(this, victory_screen.class);
+                            j.putExtra("winner", "Team 1");
+                            startActivity(j);
+
+
+                        }
+                        pointAwarded = true;
+                    }
 
 
                 }
+
                 break;
             }
 
             case R.id.add2:
             {
-                team2_total++;
-                team2score.setText("" + team2_total);
-                if(team2_total == 7) {
-
-                    Intent j = new Intent(this, victory_screen.class);
-                    j.putExtra("winner", "Team 2");
-                    startActivity(j);
+                //Points can only be added at the end of a round
 
 
-                }
+
+                    if (!roundActive) {
+
+                        if(!pointAwarded){
+                            team2_total++;
+                            team2score.setText("" + team2_total);
+                            if (team2_total == 7 && !firstPoint) {
+
+                                Intent j = new Intent(this, victory_screen.class);
+                                j.putExtra("winner", "Team 2");
+                                startActivity(j);
+                            }
+                            pointAwarded = true;
+                        }
+
+
+                    }
+
                 break;
             }
 
